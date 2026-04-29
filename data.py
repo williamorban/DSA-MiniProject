@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-#parse.py
+#data.py
 #parse and chunk texts
 
-import itertools
 def chunk(ifp: str, chunk_size: int) -> list[str]:
     chunks = []
     try:
@@ -41,23 +40,10 @@ from typing import Dict, List
 import torch
 
 def encode(text: str, vocab: Dict[str, int]) -> torch.Tensor:
-    """
-    Converts a text chunk into a binary PyTorch tensor based on vocabulary presence.
-    
-    Args:
-        text: The input string.
-        vocab: Dictionary mapping words (str) to indices (int).
-        
-    Returns:
-        A torch.Tensor of size (len(vocab),) with 1s for present words, 0s otherwise.
-    """
-    # 1. Tokenization (basic lowercase, space-split)
     tokens = text.lower().split()
-    
-    # 2. Initialize zero tensor of size V
+        # Initialize zero tensor of size V
     tensor = torch.zeros(len(vocab), dtype=torch.float32)
-    
-    # 3. Fill 1s for present tokens
+        # Fill 1s for present tokens
     for token in tokens:
         if token in vocab:
             index = vocab[token]
@@ -65,6 +51,7 @@ def encode(text: str, vocab: Dict[str, int]) -> torch.Tensor:
             
     return tensor
 
+#for debugging
 import argparse
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="encode from file path")
