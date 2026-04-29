@@ -2,6 +2,7 @@
 
 import io
 import unittest
+import torch
 import unittest.mock
 
 import data
@@ -12,6 +13,9 @@ class DataTests(unittest.TestCase):
 
     frQuotePath = "./files/french/quote.txt"
     frBiblePath = "./files/french/bible.txt"
+
+    vocabulary = {"hello": 0, "world": 1, "pytorch": 2, "tensor": 3}
+    text_chunk = "Hello world Pytorch"
 
     @classmethod
     def setupClass(cls):
@@ -40,6 +44,11 @@ class DataTests(unittest.TestCase):
         self.assertEqual(data.find_unique(self.frBiblePath)['étoile'],  21300)
         self.assertEqual(data.find_unique(self.frBiblePath)['création'],  0)
         DataTests.Passed+=1
+
+    def test_02_encode(self):
+        torch.testing.assert_close(data.encode(self.text_chunk, self.vocabulary), torch.tensor([1., 1., 1., 0.]))
+        DataTests.Passed+=1
+
 
 if __name__ == "__main__":
     unittest.main()
